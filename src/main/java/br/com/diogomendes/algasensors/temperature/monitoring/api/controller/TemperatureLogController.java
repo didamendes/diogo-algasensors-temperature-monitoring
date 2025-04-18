@@ -1,6 +1,6 @@
 package br.com.diogomendes.algasensors.temperature.monitoring.api.controller;
 
-import br.com.diogomendes.algasensors.temperature.monitoring.api.model.TemperatureLogOutput;
+import br.com.diogomendes.algasensors.temperature.monitoring.api.model.TemperatureLogData;
 import br.com.diogomendes.algasensors.temperature.monitoring.domain.model.SensorId;
 import br.com.diogomendes.algasensors.temperature.monitoring.domain.model.TemperatureLog;
 import br.com.diogomendes.algasensors.temperature.monitoring.domain.repository.TemperatureLogRepository;
@@ -22,12 +22,12 @@ public class TemperatureLogController {
     private final TemperatureLogRepository repository;
 
     @GetMapping
-    public Page<TemperatureLogOutput> search(@PathVariable TSID sensorId,
-                                             @PageableDefault Pageable pageable) {
+    public Page<TemperatureLogData> search(@PathVariable TSID sensorId,
+                                           @PageableDefault Pageable pageable) {
         Page<TemperatureLog> temperatureLogs = repository.findAllBySensorId(new SensorId(sensorId), pageable);
 
         return temperatureLogs.map(temperatureLog ->
-                TemperatureLogOutput.builder()
+                TemperatureLogData.builder()
                         .id(temperatureLog.getId().getValue())
                         .value(temperatureLog.getValue())
                         .registeredAt(temperatureLog.getRegisteredAt())
